@@ -1,0 +1,25 @@
+   public void SendEmail(string email, string subject, string message)
+        {
+            try
+            {
+                System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage();
+                mailMessage.From = new System.Net.Mail.MailAddress(_emailSettings.Email);
+                mailMessage.To.Add("hamerlamateusz@gmail.com");
+                mailMessage.Body = "body";
+                mailMessage.Subject = "subject";
+
+                using (var client = new System.Net.Mail.SmtpClient())
+                {
+                    client.Host = _emailSettings.Server;
+                    client.Port = _emailSettings.Port;
+                    client.Credentials = new System.Net.NetworkCredential(_emailSettings.Email, _emailSettings.Password);
+                    client.EnableSsl = true;
+                    client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                    client.Send(mailMessage);
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
